@@ -1,2 +1,1 @@
-Sender,Subject,Date,Snippet,Message_body
-BanDivolt <tahaefe303@gmail.com>,Deneme s,2023-12-18,Deneme s,
+
