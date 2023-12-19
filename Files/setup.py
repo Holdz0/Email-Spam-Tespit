@@ -31,7 +31,7 @@ if(os.path.isfile("token.json")):
 	pass
 else:
 	subprocess.run(['python', 'quickstart.py'])
-# Creating a storage.JSON file with authentication details
+# Kimlik doğrulama ayrıntılarını içeren bir Storage.JSON dosyası oluşturur
 SCOPES = 'https://www.googleapis.com/auth/gmail.modify' # we are using modify and not readonly, as we will be marking the messages Read
 store = file.Storage('storage.json') 
 creds = store.get()
@@ -44,14 +44,13 @@ user_id =  'me'
 label_id_one = 'INBOX'
 label_id_two = 'UNREAD'
 
-# Getting all the unread messages from Inbox
-# labelIds can be changed accordingly
+# Okunmamış tüm inbox verilerini alır
 unread_msgs = GMAIL.users().messages().list(userId='me',labelIds=[label_id_one, label_id_two]).execute()
 
-# We get a dictonary. Now reading values for the key 'messages'
+# Bir sözlük alıyoruz. Şimdi 'messages' anahtarındaki değerleri okuyoruz.
 mssg_list = unread_msgs['messages']
 
-print ("Total unread messages in inbox: ", str(len(mssg_list)))
+print ("Okunmamış Tüm Emailler: ", str(len(mssg_list)))
 
 final_list = [ ]
 
@@ -120,16 +119,16 @@ for mssg in mssg_list:
 
 
 
-print ("Total messaged retrived: ", str(len(final_list)))
+print ("Toplam Alınan Mesaj Sayısı: ", str(len(final_list)))
 
 '''
 
 The final_list will have dictionary in the following format:
 
-{	'Sender': '"email.com" <name@email.com>', 
-	'Subject': 'Lorem ipsum dolor sit ametLorem ipsum dolor sit amet', 
-	'Date': 'yyyy-mm-dd', 
-	'Snippet': 'Lorem ipsum dolor sit amet'
+{	'Gönderen': '"email.com" <name@email.com>', 
+	'Başlık': 'Lorem ipsum dolor sit ametLorem ipsum dolor sit amet', 
+	'Tarih': 'yyyy-mm-dd', 
+	'İleti': 'Lorem ipsum dolor sit amet'
 	'Message_body': 'Lorem ipsum dolor sit amet'}
 
 
@@ -143,5 +142,5 @@ with open('CSV_NAME.csv', 'w', encoding='utf-8', newline = '') as csvfile:
     writer.writeheader()
     for val in final_list:
     	writer.writerow(val)
-
+input("Kapatmak için ENTER'a basın")
 subprocess.run(['python', 'spamkontrol.py'])
