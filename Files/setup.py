@@ -143,4 +143,5 @@ with open('CSV_NAME.csv', 'w', encoding='utf-8', newline = '') as csvfile:
     writer.writeheader()
     for val in final_list:
     	writer.writerow(val)
-a = input("kapatmak için bir tuşa basın")
+
+subprocess.run(['python', 'spamkontrol.py'])

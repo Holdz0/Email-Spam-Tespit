@@ -33,27 +33,27 @@ def satır_silici(dosya_adı, satır):
 
 
    
-with open("emailtxt.txt", "r") as emailveri:
-    satırlar = emailveri.readlines()
-    uzunluk2 = len(satırlar)
+with open("emailtxt.txt", "r",encoding="utf-8") as emailveri:
+    uzunluk = len(spamtespit())
+    try:
+        while True:
+            sayac2 = 0
+            sayac = 0
+            satırlar = emailveri.readlines(1)
+            icerik = satırlar[0]
+            for k in range(0, uzunluk):
+                yazi = spamtespit()[k]
+                sayac = icerik.count(yazi)
+                sayac2 += 1
 
-    for j in range(1, uzunluk2):
-        icerik = satırlar[j - 1]
-        uzunluk = len(spamtespit())
-        sayac2 = 0
-
-        for k in range(0, uzunluk):
-            yazi = spamtespit()[k]
-            sayac = icerik.count(yazi)
-            sayac2 += 1
-
-            if sayac > 0:
-                print("Spam Tespit Edildi")
-                spam_mailler()
-                satır_silici("emailtxt.txt", j)
-                break
-            elif sayac2 == uzunluk:
-                normalmailler()
-                satır_silici("emailtxt.txt", j)
-                break
-
+                if sayac > 0:
+                    print("Spam Tespit Edildi")
+                    spam_mailler()
+                    satır_silici("emailtxt.txt", 1)
+                    break
+                elif sayac2 == uzunluk:
+                    normalmailler()
+                    satır_silici("emailtxt.txt", 1)
+                    break
+    except IndexError:
+        print("işlem sonu")
