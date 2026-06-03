@@ -1,112 +1,122 @@
-# 💻 Fiyat Performans Bilgisayar Bulucu
+# 📧 Email Spam Tespit
 
-Bütçene göre Trendyol'daki en iyi fiyat/performans oyuncu dizüstü bilgisayarını otomatik olarak bulan Python uygulaması.
+Gmail API kullanarak gelen kutusundaki e-postaları okuyup, içerdikleri spam tehdit kelimelerine göre spam olup olmadığını tespit eden Python programı.
+
+> ⚠️ **Mevcut Sürüm:** Alpha v1.0 — Geliştirme aşamasındadır.
 
 ---
 
 ## 📌 Proje Hakkında
 
-Bilgisayar almak istiyorsun ama piyasayı araştırmaya vaktın yok mu? Bu uygulama senin yerine Trendyol'u tarar, belirttiğin bütçeye göre listelenen oyuncu dizüstü bilgisayarlarını analiz eder ve donanım özelliklerine göre puanlayarak en iyi fiyat/performans seçeneğini sana sunar.
+Bu program, Gmail hesabınıza bağlanarak gelen e-postaları otomatik olarak tarar. Her e-postanın içeriğini analiz ederek önceden tanımlanmış spam anahtar kelimeleriyle karşılaştırır ve e-postanın spam olup olmadığını tespit eder. Amaç, kullanıcıyı zararlı veya istenmeyen içeriklerden korumaktır.
 
 ---
 
 ## 🚀 Özellikler
 
-- Trendyol'da **"Oyuncu Dizüstü Bilgisayar"** kategorisini otomatik olarak tarar
-- Girdiğin ortalama fiyata göre (**±%10 bütçe aralığı**) ürünleri filtreler
-- Her bilgisayarın şu özelliklerini toplar:
-  - İşlemci markası ve modeli
-  - RAM kapasitesi
-  - SSD kapasitesi
-  - Ekran kartı modeli
-  - VRAM miktarı
-  - Ekran yenileme hızı (Hz)
-  - Ürün URL'si ve fiyatı
-- Toplanan verileri **puanlama algoritmasıyla** değerlendirir
-- En yüksek puan alan bilgisayarın Trendyol sayfasını **Microsoft Edge ile otomatik açar**
-- Sade ve kullanımı kolay **PyQt5 arayüzü**
+- **Gmail API entegrasyonu** ile doğrudan Gmail hesabınıza erişim
+- Gelen e-postaların içeriklerini otomatik okuma ve analiz etme
+- Önceden tanımlanmış **spam tehdit kelime listesi** ile içerik tarama
+- E-postaların spam / spam değil olarak sınıflandırılması
+- Saf Python ile yazılmış, hafif ve bağımsız yapı
 
 ---
 
 ## 🛠️ Kullanılan Teknolojiler
 
-| Kütüphane | Amaç |
-|-----------|------|
-| `selenium` | Trendyol web scraping (tarayıcı otomasyonu) |
-| `PyQt5` | Masaüstü GUI arayüzü |
-| `Microsoft Edge WebDriver` | Selenium ile tarayıcı kontrolü |
+| Teknoloji / Kütüphane | Amaç |
+|-----------------------|------|
+| `Python 3` | Ana programlama dili |
+| `Gmail API` (Google API Client) | Gmail hesabından e-posta okuma |
+| `google-auth` / `google-auth-oauthlib` | OAuth 2.0 kimlik doğrulama |
+| `googleapiclient` | Gmail API istemcisi |
 
 ---
 
 ## 📂 Dosya Yapısı
 
 ```
-Fiyat-Performans-Bilgisayar-Bulucu/
-├── arayuz.py              # PyQt5 ile oluşturulmuş grafik arayüz
-├── trendyol_datapull.py   # Trendyol scraping ve puanlama motoru
-└── data.txt               # Kazanan bilgisayarın URL'sinin kaydedildiği dosya (otomatik oluşur)
+Email-Spam-Tespit/
+└── Files/
+    ├── main.py (veya spam_tespit.py)   # Ana program — e-posta okuma ve spam tespiti
+    ├── credentials.json                 # Google API kimlik bilgileri (kendin oluşturman gerekir)
+    └── token.json                       # OAuth oturumu (ilk çalıştırmada otomatik oluşur)
 ```
+
+> Not: `credentials.json` dosyası Google Cloud Console'dan edinilir ve repoya dahil edilmemiştir.
 
 ---
 
 ## ⚙️ Kurulum
 
-**1. Gereksinimler**
-
-Python 3.x ve aşağıdaki kütüphanelerin kurulu olması gerekir:
+### 1. Repoyu Klonla
 
 ```bash
-pip install selenium PyQt5
+git clone https://github.com/Holdz0/Email-Spam-Tespit.git
+cd Email-Spam-Tespit/Files
 ```
 
-**2. Microsoft Edge WebDriver**
-
-Bilgisayarındaki Edge sürümüyle uyumlu WebDriver'ı indirip PATH'e ekle:  
-🔗 https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/
-
-**3. Repoyu klonla**
+### 2. Gerekli Kütüphaneleri Kur
 
 ```bash
-git clone https://github.com/Holdz0/Fiyat-Performans-Bilgisayar-Bulucu.git
-cd Fiyat-Performans-Bilgisayar-Bulucu
+pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
 ```
+
+### 3. Gmail API Kimlik Bilgilerini Ayarla
+
+1. [Google Cloud Console](https://console.cloud.google.com/) adresine git
+2. Yeni bir proje oluştur
+3. **Gmail API**'yi etkinleştir
+4. **OAuth 2.0 İstemci Kimliği** oluştur (Uygulama türü: Masaüstü)
+5. İndirilen JSON dosyasını `credentials.json` olarak `Files/` klasörüne koy
 
 ---
 
 ## ▶️ Kullanım
 
 ```bash
-python arayuz.py
+python main.py
 ```
 
-1. Uygulama açılır, almayı düşündüğün bilgisayarın **ortalama bütçesini** (₺) gir
-2. **"Başlat"** butonuna tıkla
-3. Program Trendyol'u otomatik olarak tarar (birkaç dakika sürebilir)
-4. Tarama tamamlandığında **"Uygun Bilgisayar Bulundu"** ekranı gelir
-5. **"Linki Aç"** butonuna tıklayarak en iyi bilgisayarın sayfasını Edge'de görüntüle
+İlk çalıştırmada bir tarayıcı penceresi açılır ve Gmail hesabına erişim için izin istenir. İzin verildikten sonra `token.json` dosyası oluşturulur ve program e-postalarını taramaya başlar.
 
 ---
 
-## 🔢 Puanlama Sistemi
+## 🔍 Spam Tespiti Nasıl Çalışır?
 
-Her bilgisayar aşağıdaki kriterlere göre puan alır; daha güçlü donanım = daha yüksek puan:
+Program, her e-postanın konu ve içeriğini okuyarak önceden tanımlanmış bir **spam anahtar kelime listesiyle** karşılaştırır. Eşleşen kelime bulunursa e-posta **SPAM** olarak işaretlenir, bulunmazsa **güvenli** olarak kabul edilir.
 
-| Kriter | Puan Sıralaması (düşükten yükseğe) |
-|--------|-------------------------------------|
-| **İşlemci** | AMD Ryzen 5 → AMD Ryzen 7 / Intel i5 → Intel i7 |
-| **Ekran Kartı** | Dahili → MX550 → RTX 2050 → RTX 3050 → ... → RTX 4090 |
-| **RAM** | 8 GB → 12 GB → 16 GB → ... → 40 GB |
-| **VRAM** | Paylaşımlı → 4 GB → 6 GB → 8 GB → 12 GB → 16 GB |
-| **SSD** | 256 GB → 500 GB → 512 GB → 1 TB → 2 TB |
+```
+E-posta Alındı
+      │
+      ▼
+İçerik Okundu (Konu + Gövde)
+      │
+      ▼
+Spam Kelime Listesiyle Karşılaştır
+      │
+   ┌──┴──┐
+   │     │
+SPAM  Güvenli
+```
 
 ---
 
-## ⚠️ Notlar
+## ⚠️ Önemli Notlar
 
-- Program **Microsoft Edge** ve Edge WebDriver kullandığını varsayar. Farklı bir tarayıcı kullanıyorsan `trendyol_datapull.py` içindeki `webdriver.Edge()` satırlarını güncellemelisin.
-- Trendyol'un sayfa yapısı değişirse XPath ifadelerinin güncellenmesi gerekebilir.
-- Tarama süresi internet hızına ve Trendyol'un yanıt süresine göre değişir.
-- Program çalışırken arka planda bir tarayıcı penceresi açılır; bu beklenen bir davranıştır.
+- Bu proje **Alpha aşamasındadır**; hatalar ve eksiklikler bulunabilir.
+- `credentials.json` dosyasını **kesinlikle** repoya ya da halka açık bir yere yükleme.
+- Program şu an için yalnızca anahtar kelime tabanlı basit bir tespit yöntemi kullanmaktadır; makine öğrenmesi tabanlı gelişmiş sınıflandırma gelecek sürümlerde eklenebilir.
+
+---
+
+## 🗺️ Gelecek Planlar
+
+- [ ] Spam kelime listesini dışarıdan yapılandırılabilir hale getirme
+- [ ] Tespit edilen spam e-postaları otomatik olarak etiketleme veya taşıma
+- [ ] Makine öğrenmesi tabanlı sınıflandırma algoritması ekleme
+- [ ] Grafik kullanıcı arayüzü (GUI)
+- [ ] Birden fazla e-posta hesabı desteği
 
 ---
 
